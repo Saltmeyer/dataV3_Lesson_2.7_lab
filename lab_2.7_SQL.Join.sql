@@ -2,7 +2,7 @@ USE sakila;
 -- LAB 2.7 SQL Join
 
 -- Task 1 How many films are there for each of the categories in the category table. 
-SELECT c.category_id, name, COUNT(film_id)
+SELECT c.category_id, name, COUNT(film_id) AS number_films
  FROM sakila.category c
  JOIN sakila.film_category fc
  ON c.category_id = fc.category_id
@@ -20,11 +20,13 @@ SELECT c.category_id, name, COUNT(film_id)
  
   -- Task 3 Which actor appeared in the most films?
   
-  SELECT a.actor_id, first_name, last_name, count(film_id)
+  SELECT a.actor_id, first_name, last_name, count(film_id) AS number_films
   FROM sakila.actor a
   JOIN sakila.film_actor fa
   ON a.actor_id = fa.actor_id
-  GROUP BY a.actor_id;
+  GROUP BY a.actor_id
+  ORDER BY number_films DESC
+  LIMIT 1;
   
   -- Task 4 Most active customer( rented most # of films)
 Select * FROM rental;
@@ -53,7 +55,7 @@ GROUP BY f.film_id;
 
 -- Task 7 Using the tables payment and customer and the JOIN command, list the total paid by each customer. List the customers alphabetically by last name.
 
-SELECT c.customer_id, c.last_name, c.first_name, SUM(p.amount)
+SELECT c.customer_id, c.last_name, c.first_name, SUM(p.amount) AS total_paid
 FROM sakila.payment p
 JOIN sakila.customer c
 ON p.customer_id = c.customer_id
@@ -61,7 +63,7 @@ GROUP BY c.last_name
 ORDER BY c.last_name ASC;
 
 -- Task 8 List number of films per category.
-SELECT c.category_id, c.name, COUNT(f.film_id)
+SELECT c.category_id, c.name, COUNT(f.film_id) AS number_films
 FROM sakila.category c
 JOIN sakila.film_category f
 ON c.category_id = f.category_id
